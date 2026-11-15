@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Telegram — Kontaktlar</title>
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				background-color: #f1f2f5;
+				font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", Helvetica, Arial, sans-serif;
+				min-height: 100vh;
+				min-height: 100dvh;
+				display: flex;
+				justify-content: center;
+				color: #111417;
+			}
+
+			.main-wrapper {
+				width: 100%;
+				max-width: 600px;
+				background-color: #ffffff;
+				min-height: 100vh;
+				min-height: 100dvh;
+				display: flex;
+				flex-direction: column;
+				box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+			}
+
+			/* Telegram Top Header */
+			.header {
+				height: 60px;
+				background-color: #ffffff;
+				border-bottom: 1px solid #e7e8ec;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 16px;
+				position: sticky;
+				top: 0;
+				z-index: 20;
+			}
+
+			.header-left {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+
+			.tg-mini-icon {
+				width: 36px;
+				height: 36px;
+				filter: drop-shadow(0 2px 4px rgba(42, 171, 238, 0.3));
+			}
+
+			.header-title {
+				font-size: 19px;
+				font-weight: 600;
+				color: #111417;
+				letter-spacing: -0.2px;
+			}
+
+			.user-pill {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+
+			.current-user-badge {
+				font-size: 13px;
+				color: #3390ec;
+				background: rgba(51, 144, 236, 0.08);
+				padding: 4px 10px;
+				border-radius: 12px;
+				font-weight: 600;
+			}
+
+			.logout-btn {
+				color: #df3f40;
+				text-decoration: none;
+				font-size: 13.5px;
+				font-weight: 600;
+				padding: 6px 12px;
+				border-radius: 8px;
+				transition: background-color 0.2s;
+				display: flex;
+				align-items: center;
+				gap: 4px;
+			}
+			.logout-btn:hover {
+				background-color: rgba(223, 63, 64, 0.08);
+			}
+
+			/* Section Title */
+			.section-header {
+				padding: 14px 16px 8px 16px;
+				font-size: 13px;
+				font-weight: 600;
+				text-transform: uppercase;
+				color: #707579;
+				letter-spacing: 0.5px;
+				border-bottom: 1px solid #f1f2f5;
+			}
+
+			/* Kontaktlar Ro'yxati */
+			.contacts-list {
+				list-style: none;
+				flex: 1;
+				overflow-y: auto;
+			}
+
+			.contact-item {
+				display: flex;
+				align-items: center;
+				padding: 12px 16px;
+				text-decoration: none;
+				color: inherit;
+				border-bottom: 1px solid #f9fafb;
+				transition: background-color 0.15s ease;
+			}
+			.contact-item:hover {
+				background-color: #f4f6f8;
+			}
+
+			.contact-info {
+				flex: 1;
+				min-width: 0;
+			}
+
+			.contact-name {
+				font-size: 15.5px;
+				font-weight: 600;
+				color: #111417;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.contact-arrow {
+				color: #b9bec4;
+				font-size: 20px;
+				padding-left: 10px;
+			}
+
+			/* Bo'sh holat */
+			.empty-contacts {
+				text-align: center;
+				padding: 60px 24px;
+				color: #707579;
+			}
+			.empty-contacts svg {
+				width: 64px;
+				height: 64px;
+				fill: #c4c9cc;
+				margin-bottom: 14px;
+			}
+			.empty-contacts h3 {
+				font-size: 17px;
+				font-weight: 600;
+				color: #111417;
+				margin-bottom: 6px;
+			}
+			.empty-contacts p {
+				font-size: 14px;
+				line-height: 1.4;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main-wrapper">
+			<!-- Header -->
+			<div class="header">
+				<div class="header-left">
+					<svg class="tg-mini-icon" viewBox="0 0 240 240" fill="none">
+						<defs>
+							<linearGradient id="tgGrad" x1="120" y1="0" x2="120" y2="240" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#2AABEE"/>
+								<stop offset="1" stop-color="#229ED9"/>
+							</linearGradient>
+						</defs>
+						<circle cx="120" cy="120" r="120" fill="url(#tgGrad)"/>
+						<path fill="white" d="M52 119.5L172 69C177.5 66.5 182.5 70.5 180.5 76L160 172.5C158.5 179 154.5 180.5 149 177.5L118 154.5L103 169C101.5 170.5 100 172 97 172L99.2 140.5L156.5 89C159 86.8 156 85.5 152.7 87.7L81.7 132.5L51.2 123C44.5 121 44.5 116.5 52 119.5Z"/>
+					</svg>
+					<span class="header-title">Xabarlar</span>
+				</div>
+				<div class="user-pill">
+					<span class="current-user-badge">@{{ request.user.username }}</span>
+					<a href="{% url 'logout' %}" class="logout-btn" title="Tizimdan chiqish">
+						<svg style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+						Chiqish
+					</a>
+				</div>
+			</div>
+
+			<div class="section-header">Kontaktlar</div>
+
+			<!-- Dinamik Userlar Ro'yxati -->
+			<div class="contacts-list">
+				{% for u in users %}
+					<a href="{% url 'chat' u.username %}#bottom" class="contact-item">
+						<div class="contact-info">
+							<h3 class="contact-name">{{ u.username }}</h3>
+						</div>
+						<span class="contact-arrow">›</span>
+					</a>
+				{% empty %}
+					<div class="empty-contacts">
+						<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+						<h3>Boshqa foydalanuvchilar topilmadi</h3>
+						<p>Yangi foydalanuvchi ro'yxatdan o'tishi bilan shu yerda ko'rinadi.</p>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</body>
+</html>
